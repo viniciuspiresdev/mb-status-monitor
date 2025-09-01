@@ -60,11 +60,8 @@ class StatusMonitor:
     
     def _should_replicate_incident(self, incident: Dict) -> bool:
         """Determina se um incidente deve ser replicado"""
-        # Não replica manutenções programadas
-        if 'manutenção' in incident.get('name', '').lower():
-            return False
-        
-        # Não replica incidentes resolvidos há mais de 1 hora
+        # Replica TODOS os incidentes, incluindo manutenções programadas
+        # Não replica apenas incidentes resolvidos há mais de 1 hora
         if incident.get('status') == 'resolved':
             resolved_at = incident.get('resolved_at')
             if resolved_at:
