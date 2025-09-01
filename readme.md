@@ -21,7 +21,7 @@ Automação para monitorar as status pages dos fornecedores (Celcoin e Stark Ban
 Vá em Settings > Secrets and variables > Actions e adicione:
 
 - `STATUSPAGE_API_KEY`: Sua chave da API da StatusPage.io
-- `STATUSPAGE_PAGE_ID`: ID da sua página (8bkqmcmyhrmd)
+- `STATUSPAGE_PAGE_ID`: ID da sua página 
 
 ### 2. Execução
 
