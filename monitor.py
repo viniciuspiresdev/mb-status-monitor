@@ -93,6 +93,24 @@ class StatusMonitor:
         }
         return mapping.get(status, 'investigating')
     
+    def _incident_already_exists(self, provider_incident: Dict, provider_name: str) -> bool:
+        """Verifica se um incidente similar já existe na nossa status page"""
+        try:
+            our_incidents = self.statuspage_client.get_incidents()
+            
+            # Busca por incidentes ativos do mesmo fornecedor
+            for incident in our_incidents:
+                if (provider_name.upper() in incident.get('name', '') and 
+                    incident.get('status') != 'resolved'):
+                    logger.info(f"Incidente similar encontrado: {incident.get('name')}")
+                    return True
+            
+            return False
+            
+        except Exception as e:
+            logger.error(f"Erro ao verificar incidentes existentes: {e}")
+            return False
+    
     def monitor_providers(self):
         """Monitora todos os fornecedores e replica incidentes"""
         logger.info("Iniciando monitoramento dos fornecedores...")
@@ -121,10 +139,13 @@ class StatusMonitor:
                         )
                         
                         if not last_incident:
-                            # Novo incidente
+                            # Novo incidente - verifica se já existe na nossa status page
                             logger.info(f"Novo incidente detectado: {incident.get('name')}")
-                            self._create_incident(incident, provider_name)
-                            changes_detected = True
+                            if not self._incident_already_exists(incident, provider_name):
+                                self._create_incident(incident, provider_name)
+                                changes_detected = True
+                            else:
+                                logger.info(f"Incidente já existe na nossa status page: {incident.get('name')}")
                         
                         elif last_incident.get('updated_at') != incident.get('updated_at'):
                             # Incidente atualizado
@@ -146,6 +167,11 @@ class StatusMonitor:
     def _create_incident(self, incident: Dict, provider_name: str):
         """Cria um novo incidente na nossa status page"""
         try:
+            # Verifica se já existe um incidente similar
+            if self._incident_already_exists(incident, provider_name):
+                logger.info(f"Incidente já existe, pulando criação: {incident.get('name')}")
+                return
+            
             # Prepara os dados do incidente
             incident_data = {
                 'name': f"{provider_name.upper()} - {incident.get('name', 'Incidente')}",
@@ -157,7 +183,10 @@ class StatusMonitor:
             
             # Cria o incidente
             result = self.statuspage_client.create_incident(incident_data)
-            logger.info(f"Incidente criado com sucesso: {result.get('id')}")
+            if result:
+                logger.info(f"Incidente criado com sucesso: {result.get('id')}")
+            else:
+                logger.error("Falha ao criar incidente - resposta vazia da API")
             
         except Exception as e:
             logger.error(f"Erro ao criar incidente: {e}")
