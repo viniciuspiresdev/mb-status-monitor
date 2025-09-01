@@ -1,15 +1,11 @@
 # Monitor de Status Pages - MB Status Board
 
-Automação para monitorar as status pages dos fornecedores (Celcoin e Stark Bank) e replicar incidentes automaticamente na nossa status page.
+Automação para monitorar as status pages dos fornecedores e replicar incidentes automaticamente na nossa status page.
 
 ## �� Funcionalidades
 
-- ✅ Monitora Celcoin e Stark Bank automaticamente
 - ✅ Detecta novos incidentes, atualizações e resoluções
 - ✅ Replica automaticamente na nossa status page
-- ✅ Afeta componentes específicos:
-  - **Celcoin** → "Celcoin - Parceiro Corebank"
-  - **Stark Bank** → "Stark Bank - Parceiro Corebank"
 - ✅ Filtra manutenções programadas
 - ✅ Executa via GitHub Actions (gratuito)
 - ✅ Logs detalhados de todas as operações
