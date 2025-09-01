@@ -22,7 +22,7 @@ class Config:
     TIMEOUT: int = 30
     
     # Configurações de filtro
-    IGNORE_MAINTENANCE: bool = True
+    IGNORE_MAINTENANCE: bool = False
     IGNORE_RESOLVED_OLDER_THAN_HOURS: int = 1
     
     # Mapeamento dos componentes
