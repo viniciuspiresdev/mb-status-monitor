@@ -49,10 +49,6 @@ Para executar manualmente:
 - **Stark Bank**: https://status.starkbank.com/api/v2/incidents.json
 - **Nossa Status Page**: https://mbstatusboard.statuspage.io/
 
-## 🎯 Mapeamento de Componentes
-
-- **Celcoin**: ID `kqwgjnyxjlgd` - "Celcoin - Parceiro Corebank"
-- **Stark Bank**: ID `4nb00rg5gjvl` - "Stark Bank - Parceiro Corebank"
 
 ## 🚨 Logs
 
